@@ -1,16 +1,14 @@
-# This workflow executes several linters on changed files based on languages used in your code base whenever
-# you push a code or open a pull request.
-#
-# You can adjust the behavior by modifying this file.
-# For more information, see:
-# https://github.com/github/super-linter
 name: Lint Code Base
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+permissions:
+  contents: write   # needed so the bot can push fixes
+
 jobs:
   run-lint:
     runs-on: ubuntu-latest
@@ -18,12 +16,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Full git history is needed to get a proper list of changed files within `super-linter`
           fetch-depth: 0
+          persist-credentials: true  # needed for auto-commit
 
-      - name: Lint Code Base
+      - name: Lint (with autofix)
         uses: github/super-linter@v4
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: "main"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # enable fix mode per linter/formatter you use:
+          FIX_JAVASCRIPT_ES: true       # ESLint
+          FIX_JAVASCRIPT_PRETTIER: true # Prettier (JS/TS/MD/JSON/etc.)
+          FIX_TYPESCRIPT_ES: true       # ESLint for TS (if applicable)
+          FIX_JSON: true
+          FIX_MARKDOWN: true
+          # add others as needed, e.g. FIX_YAML, FIX_CSS, FIX_PYTHON_BLACK, ...
+
+      - name: Commit & push fixes (if any)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: apply linter autofixes"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
+          add_options: "-A"
