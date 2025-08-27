@@ -28,12 +28,16 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+<<<<<<< Updated upstream
       
 
       
 
             
 
+=======
+            
+>>>>>>> Stashed changes
             <Route
               path="welcome"
               element={
