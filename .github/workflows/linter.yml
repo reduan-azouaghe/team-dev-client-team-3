@@ -17,18 +17,19 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          persist-credentials: true  # needed for auto-commit
+          persist-credentials: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # or match your project version
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Lint (with autofix)
-        uses: github/super-linter@v4
-        env:
-          VALIDATE_ALL_CODEBASE: false
-          DEFAULT_BRANCH: "main"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-          # enable fix mode per linter/formatter you use:
-          FIX_JAVASCRIPT_ES: true
-          # add others as needed, e.g. FIX_YAML, FIX_CSS, FIX_PYTHON_BLACK, ...
+        run: npm run lint -- --fix
 
       - name: Commit & push fixes (if any)
         uses: stefanzweifel/git-auto-commit-action@v5
