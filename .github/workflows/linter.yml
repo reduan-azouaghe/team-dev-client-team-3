@@ -27,10 +27,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
           # enable fix mode per linter/formatter you use:
-          FIX_JAVASCRIPT_ES: true       # ESLint
-          FIX_JAVASCRIPT_PRETTIER: true # Prettier (JS/TS/MD/JSON/etc.)
           FIX_JAVASCRIPT_STANDARD: true
-          FIX_TYPESCRIPT_ES: true       # ESLint for TS (if applicable)
           # add others as needed, e.g. FIX_YAML, FIX_CSS, FIX_PYTHON_BLACK, ...
 
       - name: Commit & push fixes (if any)
