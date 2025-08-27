@@ -38,6 +38,9 @@ const App = () => {
 =======
             
 >>>>>>> Stashed changes
+=======
+            
+>>>>>>> Stashed changes
             <Route
               path="welcome"
               element={
